@@ -70,13 +70,12 @@ ScreenGui.Parent = guiParent
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 260, 0, 520) -- Dipertinggi sedikit agar muat tombol tambahan
-MainFrame.Position = UDim2.new(0.5, -130, 0.33, -227)
+MainFrame.Size = UDim2.new(0, 260, 0, 420) -- Diperpendek dari 520 menjadi 420 agar lebih compact
+MainFrame.Position = UDim2.new(0.5, -130, 0.33, -210)
 MainFrame.BackgroundColor3 = Color3.fromRGB(15, 10, 25)
 MainFrame.BackgroundTransparency = 0.1 
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
-MainFrame.Draggable = true
 MainFrame.Parent = ScreenGui
 
 local MainCorner = Instance.new("UICorner")
@@ -132,6 +131,7 @@ task.spawn(function()
 end)
 
 local HeaderBg = Instance.new("Frame")
+HeaderBg.Name = "HeaderBg"
 HeaderBg.Size = UDim2.new(1, 0, 0, 36)
 HeaderBg.BackgroundColor3 = Color3.fromRGB(25, 15, 45)
 HeaderBg.BackgroundTransparency = 0.2
@@ -142,6 +142,35 @@ HeaderBg.Parent = MainFrame
 local HeaderCorner = Instance.new("UICorner")
 HeaderCorner.CornerRadius = UDim.new(0, 12)
 HeaderCorner.Parent = HeaderBg
+
+-- SCRIPT DRAGGING UNTUK SELURUH UI (DITENGAH-TENGAH HEADER)
+local dragging, dragInput, dragStart, startPos
+HeaderBg.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+HeaderBg.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
 
 local IsMinimized = false
 local MinimizeBtn = Instance.new("TextButton")
@@ -214,11 +243,11 @@ OpenCorner.Parent = OpenButton
 
 -- Tombol Tab Navigation (3 Tab: VOLCANO, RUSUH, WALLHCK)
 local Tab1Btn = Instance.new("TextButton")
-Tab1Btn.Size = UDim2.new(0.33, -4, 0, 26)
-Tab1Btn.Position = UDim2.new(0, 6, 0, 42)
+Tab1Btn.Size = UDim2.new(0.33, -4, 0, 24)
+Tab1Btn.Position = UDim2.new(0, 6, 0, 40)
 Tab1Btn.BackgroundColor3 = Color3.fromRGB(90, 40, 180)
 Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Tab1Btn.TextSize = 9.5
+Tab1Btn.TextSize = 9
 Tab1Btn.Font = Enum.Font.GothamBold
 Tab1Btn.Text = "VOLCANO"
 Tab1Btn.ZIndex = 2
@@ -229,11 +258,11 @@ Tab1Corner.CornerRadius = UDim.new(0, 6)
 Tab1Corner.Parent = Tab1Btn
 
 local Tab2Btn = Instance.new("TextButton")
-Tab2Btn.Size = UDim2.new(0.33, -4, 0, 26)
-Tab2Btn.Position = UDim2.new(0.33, 2, 0, 42)
+Tab2Btn.Size = UDim2.new(0.33, -4, 0, 24)
+Tab2Btn.Position = UDim2.new(0.33, 2, 0, 40)
 Tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
 Tab2Btn.TextColor3 = Color3.fromRGB(180, 160, 210)
-Tab2Btn.TextSize = 9.5
+Tab2Btn.TextSize = 9
 Tab2Btn.Font = Enum.Font.GothamBold
 Tab2Btn.Text = "RUSUH"
 Tab2Btn.ZIndex = 2
@@ -244,11 +273,11 @@ Tab2Corner.CornerRadius = UDim.new(0, 6)
 Tab2Corner.Parent = Tab2Btn
 
 local Tab3Btn = Instance.new("TextButton")
-Tab3Btn.Size = UDim2.new(0.33, -4, 0, 26)
-Tab3Btn.Position = UDim2.new(0.66, 0, 0, 42)
+Tab3Btn.Size = UDim2.new(0.33, -4, 0, 24)
+Tab3Btn.Position = UDim2.new(0.66, 0, 0, 40)
 Tab3Btn.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
 Tab3Btn.TextColor3 = Color3.fromRGB(180, 160, 210)
-Tab3Btn.TextSize = 9.5
+Tab3Btn.TextSize = 9
 Tab3Btn.Font = Enum.Font.GothamBold
 Tab3Btn.Text = "WALLHCK"
 Tab3Btn.ZIndex = 2
@@ -260,13 +289,13 @@ Tab3Corner.Parent = Tab3Btn
 
 -- ==================== CONTAINER 1: VOLCANO TRAP ====================
 local TrapContainer = Instance.new("ScrollingFrame")
-TrapContainer.Size = UDim2.new(1, 0, 1, -76)
-TrapContainer.Position = UDim2.new(0, 0, 0, 76)
+TrapContainer.Size = UDim2.new(1, 0, 1, -70)
+TrapContainer.Position = UDim2.new(0, 0, 0, 70)
 TrapContainer.BackgroundTransparency = 1
 TrapContainer.Visible = true
 TrapContainer.ZIndex = 2
-TrapContainer.CanvasSize = UDim2.new(0, 0, 0, 360)
-TrapContainer.ScrollBarThickness = 4
+TrapContainer.CanvasSize = UDim2.new(0, 0, 0, 315)
+TrapContainer.ScrollBarThickness = 3
 TrapContainer.Parent = MainFrame
 
 -- ==================== KEY SYSTEM OVERLAY UNTUK VOLCANO ====================
@@ -278,24 +307,24 @@ KeyOverlay.ZIndex = 10
 KeyOverlay.Parent = TrapContainer
 
 local KeyTitle = Instance.new("TextLabel")
-KeyTitle.Size = UDim2.new(0.9, 0, 0, 40)
-KeyTitle.Position = UDim2.new(0.05, 0, 0.2, 0)
+KeyTitle.Size = UDim2.new(0.9, 0, 0, 35)
+KeyTitle.Position = UDim2.new(0.05, 0, 0.18, 0)
 KeyTitle.BackgroundTransparency = 1
 KeyTitle.TextColor3 = Color3.fromRGB(240, 220, 255)
-KeyTitle.TextSize = 13
+KeyTitle.TextSize = 12
 KeyTitle.Font = Enum.Font.GothamBold
 KeyTitle.Text = "🔒 MASUKKAN KEY VOLCANO"
 KeyTitle.ZIndex = 11
 KeyTitle.Parent = KeyOverlay
 
 local KeyBox = Instance.new("TextBox")
-KeyBox.Size = UDim2.new(0.85, 0, 0, 36)
-KeyBox.Position = UDim2.new(0.075, 0, 0.40, 0)
+KeyBox.Size = UDim2.new(0.85, 0, 0, 32)
+KeyBox.Position = UDim2.new(0.075, 0, 0.38, 0)
 KeyBox.BackgroundColor3 = Color3.fromRGB(25, 15, 45)
 KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 KeyBox.PlaceholderText = "Ketik Key Di Sini..."
 KeyBox.Text = ""
-KeyBox.TextSize = 12
+KeyBox.TextSize = 11
 KeyBox.Font = Enum.Font.GothamBold
 KeyBox.ZIndex = 11
 KeyBox.Parent = KeyOverlay
@@ -305,11 +334,11 @@ KeyBoxCorner.CornerRadius = UDim.new(0, 8)
 KeyBoxCorner.Parent = KeyBox
 
 local KeySubmitBtn = Instance.new("TextButton")
-KeySubmitBtn.Size = UDim2.new(0.85, 0, 0, 36)
-KeySubmitBtn.Position = UDim2.new(0.075, 0, 0.57, 0)
+KeySubmitBtn.Size = UDim2.new(0.85, 0, 0, 32)
+KeySubmitBtn.Position = UDim2.new(0.075, 0, 0.55, 0)
 KeySubmitBtn.BackgroundColor3 = Color3.fromRGB(110, 40, 210)
 KeySubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-KeySubmitBtn.TextSize = 11
+KeySubmitBtn.TextSize = 10
 KeySubmitBtn.Font = Enum.Font.GothamBold
 KeySubmitBtn.Text = "SUBMIT KEY"
 KeySubmitBtn.ZIndex = 11
@@ -320,11 +349,11 @@ KeySubmitCorner.CornerRadius = UDim.new(0, 8)
 KeySubmitCorner.Parent = KeySubmitBtn
 
 local KeyStatusLabel = Instance.new("TextLabel")
-KeyStatusLabel.Size = UDim2.new(0.9, 0, 0, 30)
-KeyStatusLabel.Position = UDim2.new(0.05, 0, 0.72, 0)
+KeyStatusLabel.Size = UDim2.new(0.9, 0, 0, 25)
+KeyStatusLabel.Position = UDim2.new(0.05, 0, 0.70, 0)
 KeyStatusLabel.BackgroundTransparency = 1
 KeyStatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-KeyStatusLabel.TextSize = 10
+KeyStatusLabel.TextSize = 9.5
 KeyStatusLabel.Font = Enum.Font.Gotham
 KeyStatusLabel.Text = ""
 KeyStatusLabel.ZIndex = 11
@@ -332,24 +361,24 @@ KeyStatusLabel.Parent = KeyOverlay
 
 -- Konten Asli Volcano Trap
 local TargetLabel = Instance.new("TextLabel")
-TargetLabel.Size = UDim2.new(0.92, 0, 0, 18)
+TargetLabel.Size = UDim2.new(0.92, 0, 0, 16)
 TargetLabel.Position = UDim2.new(0.04, 0, 0.01, 0)
 TargetLabel.BackgroundTransparency = 1
 TargetLabel.TextColor3 = Color3.fromRGB(160, 200, 255)
-TargetLabel.TextSize = 9.5
+TargetLabel.TextSize = 9
 TargetLabel.Font = Enum.Font.GothamBold
 TargetLabel.Text = "TARGET: (Belum dipilih)"
 TargetLabel.ZIndex = 2
 TargetLabel.Parent = TrapContainer
 
 local PlayerListScroll = Instance.new("ScrollingFrame")
-PlayerListScroll.Size = UDim2.new(0.92, 0, 0, 135)
-PlayerListScroll.Position = UDim2.new(0.04, 0, 0.075, 0)
+PlayerListScroll.Size = UDim2.new(0.92, 0, 0, 110) -- Diperpendek agar lebih pas
+PlayerListScroll.Position = UDim2.new(0.04, 0, 0.07, 0)
 PlayerListScroll.BackgroundColor3 = Color3.fromRGB(20, 14, 35)
 PlayerListScroll.BackgroundTransparency = 0.4
 PlayerListScroll.BorderSizePixel = 0
 PlayerListScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-PlayerListScroll.ScrollBarThickness = 4
+PlayerListScroll.ScrollBarThickness = 3
 PlayerListScroll.ZIndex = 2
 PlayerListScroll.Parent = TrapContainer
 
@@ -359,7 +388,7 @@ ScrollCorner.Parent = PlayerListScroll
 
 local UIListLayout1 = Instance.new("UIListLayout")
 UIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout1.Padding = UDim.new(0, 4)
+UIListLayout1.Padding = UDim.new(0, 3)
 UIListLayout1.Parent = PlayerListScroll
 
 -- Deklarasi Variabel Global untuk Menu Rusuh
@@ -385,7 +414,7 @@ refreshPlayerList = function()
         if p ~= LocalPlayer then
             -- VOLCANO TAB ITEM
             local pItem = Instance.new("Frame")
-            pItem.Size = UDim2.new(1, 0, 0, 32)
+            pItem.Size = UDim2.new(1, 0, 0, 28) -- Diperkecil tingginya
             pItem.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
             pItem.BackgroundTransparency = 0.4
             pItem.BorderSizePixel = 0
@@ -393,23 +422,23 @@ refreshPlayerList = function()
             pItem.Parent = PlayerListScroll
 
             local itemCorner = Instance.new("UICorner")
-            itemCorner.CornerRadius = UDim.new(0, 6)
+            itemCorner.CornerRadius = UDim.new(0, 5)
             itemCorner.Parent = pItem
 
             local icon = Instance.new("ImageLabel")
-            icon.Size = UDim2.new(0, 24, 0, 24)
-            icon.Position = UDim2.new(0, 4, 0.5, -12)
+            icon.Size = UDim2.new(0, 20, 0, 20)
+            icon.Position = UDim2.new(0, 4, 0.5, -10)
             icon.BackgroundTransparency = 1
             icon.Image = "rbxthumb://type=AvatarHeadShot&id=" .. p.UserId .. "&w=150&h=150"
             icon.ZIndex = 3
             icon.Parent = pItem
 
             local nameLbl = Instance.new("TextLabel")
-            nameLbl.Size = UDim2.new(0.40, 0, 0, 15)
-            nameLbl.Position = UDim2.new(0, 32, 0, 2)
+            nameLbl.Size = UDim2.new(0.40, 0, 0, 13)
+            nameLbl.Position = UDim2.new(0, 28, 0, 2)
             nameLbl.BackgroundTransparency = 1
             nameLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-            nameLbl.TextSize = 9.5
+            nameLbl.TextSize = 9
             nameLbl.Font = Enum.Font.GothamBold
             nameLbl.Text = p.DisplayName
             nameLbl.TextXAlignment = Enum.TextXAlignment.Left
@@ -417,11 +446,11 @@ refreshPlayerList = function()
             nameLbl.Parent = pItem
 
             local tagLbl = Instance.new("TextLabel")
-            tagLbl.Size = UDim2.new(0.40, 0, 0, 12)
-            tagLbl.Position = UDim2.new(0, 32, 0, 17)
+            tagLbl.Size = UDim2.new(0.40, 0, 0, 11)
+            tagLbl.Position = UDim2.new(0, 28, 0, 15)
             tagLbl.BackgroundTransparency = 1
             tagLbl.TextColor3 = Color3.fromRGB(180, 160, 210)
-            tagLbl.TextSize = 8
+            tagLbl.TextSize = 7.5
             tagLbl.Font = Enum.Font.Gotham
             tagLbl.Text = "@" .. p.Name
             tagLbl.TextXAlignment = Enum.TextXAlignment.Left
@@ -443,11 +472,11 @@ refreshPlayerList = function()
             end)
 
             local tpBtn = Instance.new("TextButton")
-            tpBtn.Size = UDim2.new(0, 24, 0, 22)
-            tpBtn.Position = UDim2.new(1, -54, 0.5, -11)
+            tpBtn.Size = UDim2.new(0, 22, 0, 20)
+            tpBtn.Position = UDim2.new(1, -48, 0.5, -10)
             tpBtn.BackgroundColor3 = Color3.fromRGB(50, 30, 90)
             tpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            tpBtn.TextSize = 9
+            tpBtn.TextSize = 8.5
             tpBtn.Font = Enum.Font.GothamBold
             tpBtn.Text = "TP"
             tpBtn.ZIndex = 3
@@ -470,11 +499,11 @@ refreshPlayerList = function()
             end)
 
             local spBtn = Instance.new("TextButton")
-            spBtn.Size = UDim2.new(0, 24, 0, 22)
-            spBtn.Position = UDim2.new(1, -26, 0.5, -11)
+            spBtn.Size = UDim2.new(0, 22, 0, 20)
+            spBtn.Position = UDim2.new(1, -23, 0.5, -10)
             spBtn.BackgroundColor3 = Color3.fromRGB(50, 30, 90)
             spBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            spBtn.TextSize = 9
+            spBtn.TextSize = 8.5
             spBtn.Font = Enum.Font.GothamBold
             spBtn.Text = "SP"
             spBtn.ZIndex = 3
@@ -506,7 +535,7 @@ refreshPlayerList = function()
             -- RUSUH TAB ITEM
             if RusuhPlayerListScroll then
                 local pItemR = Instance.new("Frame")
-                pItemR.Size = UDim2.new(1, 0, 0, 32)
+                pItemR.Size = UDim2.new(1, 0, 0, 28)
                 pItemR.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
                 pItemR.BackgroundTransparency = 0.4
                 pItemR.BorderSizePixel = 0
@@ -514,23 +543,23 @@ refreshPlayerList = function()
                 pItemR.Parent = RusuhPlayerListScroll
 
                 local itemCornerR = Instance.new("UICorner")
-                itemCornerR.CornerRadius = UDim.new(0, 6)
+                itemCornerR.CornerRadius = UDim.new(0, 5)
                 itemCornerR.Parent = pItemR
 
                 local iconR = Instance.new("ImageLabel")
-                iconR.Size = UDim2.new(0, 24, 0, 24)
-                iconR.Position = UDim2.new(0, 4, 0.5, -12)
+                iconR.Size = UDim2.new(0, 20, 0, 20)
+                iconR.Position = UDim2.new(0, 4, 0.5, -10)
                 iconR.BackgroundTransparency = 1
                 iconR.Image = "rbxthumb://type=AvatarHeadShot&id=" .. p.UserId .. "&w=150&h=150"
                 iconR.ZIndex = 3
                 iconR.Parent = pItemR
 
                 local nameLblR = Instance.new("TextLabel")
-                nameLblR.Size = UDim2.new(0.40, 0, 0, 15)
-                nameLblR.Position = UDim2.new(0, 32, 0, 2)
+                nameLblR.Size = UDim2.new(0.40, 0, 0, 13)
+                nameLblR.Position = UDim2.new(0, 28, 0, 2)
                 nameLblR.BackgroundTransparency = 1
                 nameLblR.TextColor3 = Color3.fromRGB(255, 255, 255)
-                nameLblR.TextSize = 9.5
+                nameLblR.TextSize = 9
                 nameLblR.Font = Enum.Font.GothamBold
                 nameLblR.Text = p.DisplayName
                 nameLblR.TextXAlignment = Enum.TextXAlignment.Left
@@ -538,11 +567,11 @@ refreshPlayerList = function()
                 nameLblR.Parent = pItemR
 
                 local tagLblR = Instance.new("TextLabel")
-                tagLblR.Size = UDim2.new(0.40, 0, 0, 12)
-                tagLblR.Position = UDim2.new(0, 32, 0, 17)
+                tagLblR.Size = UDim2.new(0.40, 0, 0, 11)
+                tagLblR.Position = UDim2.new(0, 28, 0, 15)
                 tagLblR.BackgroundTransparency = 1
                 tagLblR.TextColor3 = Color3.fromRGB(180, 160, 210)
-                tagLblR.TextSize = 8
+                tagLblR.TextSize = 7.5
                 tagLblR.Font = Enum.Font.Gotham
                 tagLblR.Text = "@" .. p.Name
                 tagLblR.TextXAlignment = Enum.TextXAlignment.Left
@@ -565,11 +594,11 @@ refreshPlayerList = function()
                 end)
 
                 local tpBtnR = Instance.new("TextButton")
-                tpBtnR.Size = UDim2.new(0, 24, 0, 22)
-                tpBtnR.Position = UDim2.new(1, -54, 0.5, -11)
+                tpBtnR.Size = UDim2.new(0, 22, 0, 20)
+                tpBtnR.Position = UDim2.new(1, -48, 0.5, -10)
                 tpBtnR.BackgroundColor3 = Color3.fromRGB(50, 30, 90)
                 tpBtnR.TextColor3 = Color3.fromRGB(255, 255, 255)
-                tpBtnR.TextSize = 9
+                tpBtnR.TextSize = 8.5
                 tpBtnR.Font = Enum.Font.GothamBold
                 tpBtnR.Text = "TP"
                 tpBtnR.ZIndex = 3
@@ -593,11 +622,11 @@ refreshPlayerList = function()
                 end)
 
                 local spBtnR = Instance.new("TextButton")
-                spBtnR.Size = UDim2.new(0, 24, 0, 22)
-                spBtnR.Position = UDim2.new(1, -26, 0.5, -11)
+                spBtnR.Size = UDim2.new(0, 22, 0, 20)
+                spBtnR.Position = UDim2.new(1, -23, 0.5, -10)
                 spBtnR.BackgroundColor3 = Color3.fromRGB(50, 30, 90)
                 spBtnR.TextColor3 = Color3.fromRGB(255, 255, 255)
-                spBtnR.TextSize = 9
+                spBtnR.TextSize = 8.5
                 spBtnR.Font = Enum.Font.GothamBold
                 spBtnR.Text = "SP"
                 spBtnR.ZIndex = 3
@@ -650,11 +679,11 @@ task.spawn(function()
 end)
 
 local ToggleButton = Instance.new("TextButton")
-ToggleButton.Size = UDim2.new(0.92, 0, 0, 28)
-ToggleButton.Position = UDim2.new(0.04, 0, 0.49, 0)
+ToggleButton.Size = UDim2.new(0.92, 0, 0, 26)
+ToggleButton.Position = UDim2.new(0.04, 0, 0.44, 0)
 ToggleButton.BackgroundColor3 = Color3.fromRGB(120, 30, 60)
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.TextSize = 9.5
+ToggleButton.TextSize = 9
 ToggleButton.Font = Enum.Font.GothamBold
 ToggleButton.Text = "VOLCANO TRAP: OFF"
 ToggleButton.ZIndex = 2
@@ -725,11 +754,11 @@ local function executeTeleportToCar()
 end
 
 local TpCarButton = Instance.new("TextButton")
-TpCarButton.Size = UDim2.new(0.92, 0, 0, 28)
-TpCarButton.Position = UDim2.new(0.04, 0, 0.57, 0)
+TpCarButton.Size = UDim2.new(0.92, 0, 0, 26)
+TpCarButton.Position = UDim2.new(0.04, 0, 0.52, 0)
 TpCarButton.BackgroundColor3 = Color3.fromRGB(50, 40, 90)
 TpCarButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TpCarButton.TextSize = 9.5
+TpCarButton.TextSize = 9
 TpCarButton.Font = Enum.Font.GothamBold
 TpCarButton.Text = "🚗 TP TO CAR"
 TpCarButton.ZIndex = 2
@@ -746,11 +775,11 @@ end)
 
 -- ==================== PERBAIKAN FITUR: TP BASE (LUMBER TYCOON 2) ====================
 local TpBaseButton = Instance.new("TextButton")
-TpBaseButton.Size = UDim2.new(0.92, 0, 0, 28)
-TpBaseButton.Position = UDim2.new(0.04, 0, 0.65, 0)
+TpBaseButton.Size = UDim2.new(0.92, 0, 0, 26)
+TpBaseButton.Position = UDim2.new(0.04, 0, 0.60, 0)
 TpBaseButton.BackgroundColor3 = Color3.fromRGB(70, 40, 130)
 TpBaseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TpBaseButton.TextSize = 9.5
+TpBaseButton.TextSize = 9
 TpBaseButton.Font = Enum.Font.GothamBold
 TpBaseButton.Text = "🏠 TP TO BASE"
 TpBaseButton.ZIndex = 2
@@ -767,7 +796,6 @@ TpBaseButton.MouseButton1Click:Connect(function()
 
     local foundBaseCenter = nil
 
-    -- 1. Deteksi melalui folder PlayerPlots LT2
     local plotsFolder = Workspace:FindFirstChild("PlayerPlots")
     if plotsFolder then
         for _, plot in ipairs(plotsFolder:GetChildren()) do
@@ -790,7 +818,6 @@ TpBaseButton.MouseButton1Click:Connect(function()
         end
     end
 
-    -- 2. Deteksi melalui folder Land LT2 (jika PlayerPlots tidak ditemukan)
     if not foundBaseCenter then
         for _, land in ipairs(Workspace:GetChildren()) do
             if land.Name == "Land" then
@@ -806,7 +833,6 @@ TpBaseButton.MouseButton1Click:Connect(function()
         end
     end
 
-    -- 3. Deteksi fallback universal (mencari objek base berdasarkan nama owner value dimanapun)
     if not foundBaseCenter then
         for _, obj in ipairs(Workspace:GetDescendants()) do
             if obj.Name == "Owner" and obj.Value == LocalPlayer then
@@ -834,11 +860,11 @@ end)
 
 -- ==================== DIPINDAHKAN KE MENU VOLCANO: FLIP VEHICLE ====================
 local FlipVehicleBtn = Instance.new("TextButton")
-FlipVehicleBtn.Size = UDim2.new(0.92, 0, 0, 28)
-FlipVehicleBtn.Position = UDim2.new(0.04, 0, 0.73, 0)
+FlipVehicleBtn.Size = UDim2.new(0.92, 0, 0, 26)
+FlipVehicleBtn.Position = UDim2.new(0.04, 0, 0.68, 0)
 FlipVehicleBtn.BackgroundColor3 = Color3.fromRGB(255, 150, 0)
 FlipVehicleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-FlipVehicleBtn.TextSize = 9.5
+FlipVehicleBtn.TextSize = 9
 FlipVehicleBtn.Font = Enum.Font.GothamBold
 FlipVehicleBtn.Text = "🔄 FLIP VEHICLE"
 FlipVehicleBtn.ZIndex = 2
@@ -868,11 +894,11 @@ end)
 
 -- ==================== DIPINDAHKAN KE MENU VOLCANO: TELEPORT VEHICLE TO ME ====================
 local TpVehicleBtn = Instance.new("TextButton")
-TpVehicleBtn.Size = UDim2.new(0.92, 0, 0, 28)
-TpVehicleBtn.Position = UDim2.new(0.04, 0, 0.81, 0)
+TpVehicleBtn.Size = UDim2.new(0.92, 0, 0, 26)
+TpVehicleBtn.Position = UDim2.new(0.04, 0, 0.76, 0)
 TpVehicleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
 TpVehicleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-TpVehicleBtn.TextSize = 9.5
+TpVehicleBtn.TextSize = 9
 TpVehicleBtn.Font = Enum.Font.GothamBold
 TpVehicleBtn.Text = "🚙 TELEPORT VEHICLE TO ME"
 TpVehicleBtn.ZIndex = 2
@@ -916,32 +942,32 @@ end)
 
 -- ==================== CONTAINER 2: RUSUH / BRING PARTS ====================
 local RusuhContainer = Instance.new("Frame")
-RusuhContainer.Size = UDim2.new(1, 0, 1, -76)
-RusuhContainer.Position = UDim2.new(0, 0, 0, 76)
+RusuhContainer.Size = UDim2.new(1, 0, 1, -70)
+RusuhContainer.Position = UDim2.new(0, 0, 0, 70)
 RusuhContainer.BackgroundTransparency = 1
 RusuhContainer.Visible = false
 RusuhContainer.ZIndex = 2
 RusuhContainer.Parent = MainFrame
 
 RusuhTargetLabel = Instance.new("TextLabel")
-RusuhTargetLabel.Size = UDim2.new(0.92, 0, 0, 18)
+RusuhTargetLabel.Size = UDim2.new(0.92, 0, 0, 16)
 RusuhTargetLabel.Position = UDim2.new(0.04, 0, 0.01, 0)
 RusuhTargetLabel.BackgroundTransparency = 1
 RusuhTargetLabel.TextColor3 = Color3.fromRGB(180, 160, 210)
-RusuhTargetLabel.TextSize = 9.5
+RusuhTargetLabel.TextSize = 9
 RusuhTargetLabel.Font = Enum.Font.GothamBold
 RusuhTargetLabel.Text = "RUSUH TARGET: (Pilih di List / Ketik bawah)"
 RusuhTargetLabel.ZIndex = 2
 RusuhTargetLabel.Parent = RusuhContainer
 
 RusuhPlayerListScroll = Instance.new("ScrollingFrame")
-RusuhPlayerListScroll.Size = UDim2.new(0.92, 0, 0, 120)
-RusuhPlayerListScroll.Position = UDim2.new(0.04, 0, 0.075, 0)
+RusuhPlayerListScroll.Size = UDim2.new(0.92, 0, 0, 105)
+RusuhPlayerListScroll.Position = UDim2.new(0.04, 0, 0.07, 0)
 RusuhPlayerListScroll.BackgroundColor3 = Color3.fromRGB(20, 14, 35)
 RusuhPlayerListScroll.BackgroundTransparency = 0.4
 RusuhPlayerListScroll.BorderSizePixel = 0
 RusuhPlayerListScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-RusuhPlayerListScroll.ScrollBarThickness = 4
+RusuhPlayerListScroll.ScrollBarThickness = 3
 RusuhPlayerListScroll.ZIndex = 2
 RusuhPlayerListScroll.Parent = RusuhContainer
 
@@ -951,18 +977,18 @@ RusuhScrollCorner.Parent = RusuhPlayerListScroll
 
 local UIListLayoutRusuh = Instance.new("UIListLayout")
 UIListLayoutRusuh.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayoutRusuh.Padding = UDim.new(0, 4)
+UIListLayoutRusuh.Padding = UDim.new(0, 3)
 UIListLayoutRusuh.Parent = RusuhPlayerListScroll
 
 local RusuhBox = Instance.new("TextBox")
-RusuhBox.Size = UDim2.new(0.92, 0, 0, 30)
-RusuhBox.Position = UDim2.new(0.04, 0, 0.38, 0)
+RusuhBox.Size = UDim2.new(0.92, 0, 0, 28)
+RusuhBox.Position = UDim2.new(0.04, 0, 0.44, 0)
 RusuhBox.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
 RusuhBox.BackgroundTransparency = 0.4
 RusuhBox.PlaceholderText = "Ketik Nama Target Rusuh..."
 RusuhBox.Text = ""
 RusuhBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-RusuhBox.TextSize = 10
+RusuhBox.TextSize = 9.5
 RusuhBox.Font = Enum.Font.GothamBold
 RusuhBox.ZIndex = 2
 RusuhBox.Parent = RusuhContainer
@@ -972,11 +998,11 @@ RusuhBoxCorner.CornerRadius = UDim.new(0, 6)
 RusuhBoxCorner.Parent = RusuhBox
 
 local RusuhExecBtn = Instance.new("TextButton")
-RusuhExecBtn.Size = UDim2.new(0.92, 0, 0, 40)
-RusuhExecBtn.Position = UDim2.new(0.04, 0, 0.50, 0)
+RusuhExecBtn.Size = UDim2.new(0.92, 0, 0, 35)
+RusuhExecBtn.Position = UDim2.new(0.04, 0, 0.55, 0)
 RusuhExecBtn.BackgroundColor3 = Color3.fromRGB(110, 40, 210)
 RusuhExecBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-RusuhExecBtn.TextSize = 12
+RusuhExecBtn.TextSize = 11
 RusuhExecBtn.Font = Enum.Font.GothamBold
 RusuhExecBtn.Text = "RUSUH OFF"
 RusuhExecBtn.ZIndex = 2
@@ -1118,19 +1144,19 @@ end)
 
 -- ==================== CONTAINER 3: WALLHCK ====================
 local WallhckContainer = Instance.new("Frame")
-WallhckContainer.Size = UDim2.new(1, 0, 1, -76)
-WallhckContainer.Position = UDim2.new(0, 0, 0, 76)
+WallhckContainer.Size = UDim2.new(1, 0, 1, -70)
+WallhckContainer.Position = UDim2.new(0, 0, 0, 70)
 WallhckContainer.BackgroundTransparency = 1
 WallhckContainer.Visible = false
 WallhckContainer.ZIndex = 2
 WallhckContainer.Parent = MainFrame
 
 local GlowBtn = Instance.new("TextButton")
-GlowBtn.Size = UDim2.new(0.92, 0, 0, 36)
+GlowBtn.Size = UDim2.new(0.92, 0, 0, 32)
 GlowBtn.Position = UDim2.new(0.04, 0, 0.05, 0)
 GlowBtn.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
 GlowBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-GlowBtn.TextSize = 9.5
+GlowBtn.TextSize = 9
 GlowBtn.Font = Enum.Font.GothamBold
 GlowBtn.Text = "GLOW CHAMS: OFF"
 GlowBtn.ZIndex = 2
@@ -1152,11 +1178,11 @@ GlowBtn.MouseButton1Click:Connect(function()
 end)
 
 local EspBtn = Instance.new("TextButton")
-EspBtn.Size = UDim2.new(0.92, 0, 0, 36)
-EspBtn.Position = UDim2.new(0.04, 0, 0.22, 0)
+EspBtn.Size = UDim2.new(0.92, 0, 0, 32)
+EspBtn.Position = UDim2.new(0.04, 0, 0.18, 0)
 EspBtn.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
 EspBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-EspBtn.TextSize = 9.5
+EspBtn.TextSize = 9
 EspBtn.Font = Enum.Font.GothamBold
 EspBtn.Text = "ESP NAME: OFF"
 EspBtn.ZIndex = 2
