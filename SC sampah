@@ -70,7 +70,7 @@ ScreenGui.Parent = guiParent
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 250, 0, 365) -- Ditinggikan sedikit agar jarak tombol lebih longgar & rapi
+MainFrame.Size = UDim2.new(0, 250, 0, 365)
 MainFrame.Position = UDim2.new(0.5, -125, 0.33, -175)
 MainFrame.BackgroundColor3 = Color3.fromRGB(15, 10, 25)
 MainFrame.BackgroundTransparency = 0.1 
@@ -92,7 +92,6 @@ MainStroke.Parent = MainFrame
 local dragging, dragInput, dragStart, startPos
 MainFrame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        -- Jangan aktifkan drag jika pengguna sedang menekan tombol interaktif atau textbox
         local targetObj = UserInputService:GetFocusedTextBox()
         if not targetObj then
             dragging = true
@@ -245,15 +244,15 @@ local OpenCorner = Instance.new("UICorner")
 OpenCorner.CornerRadius = UDim.new(1, 0)
 OpenCorner.Parent = OpenButton
 
--- Tombol Tab Navigation (3 Tab: VOLCANO, RUSUH, WALLHCK)
+-- Tombol Tab Navigation (3 Tab: KillPlyer, RUSUH, WALLHCK)
 local Tab1Btn = Instance.new("TextButton")
 Tab1Btn.Size = UDim2.new(0.33, -4, 0, 22)
 Tab1Btn.Position = UDim2.new(0, 5, 0, 36)
 Tab1Btn.BackgroundColor3 = Color3.fromRGB(90, 40, 180)
 Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Tab1Btn.TextSize = 8.5
+Tab1Btn.TextSize = 8
 Tab1Btn.Font = Enum.Font.GothamBold
-Tab1Btn.Text = "VOLCANO"
+Tab1Btn.Text = "KillPlyer"
 Tab1Btn.ZIndex = 2
 Tab1Btn.Parent = MainFrame
 
@@ -291,18 +290,18 @@ local Tab3Corner = Instance.new("UICorner")
 Tab3Corner.CornerRadius = UDim.new(0, 5)
 Tab3Corner.Parent = Tab3Btn
 
--- ==================== CONTAINER 1: VOLCANO TRAP ====================
+-- ==================== CONTAINER 1: KILLPLYER ====================
 local TrapContainer = Instance.new("ScrollingFrame")
 TrapContainer.Size = UDim2.new(1, 0, 1, -62)
 TrapContainer.Position = UDim2.new(0, 0, 0, 62)
 TrapContainer.BackgroundTransparency = 1
 TrapContainer.Visible = true
 TrapContainer.ZIndex = 2
-TrapContainer.CanvasSize = UDim2.new(0, 0, 0, 300) -- Disesuaikan agar ruang antar tombol longgar
+TrapContainer.CanvasSize = UDim2.new(0, 0, 0, 300)
 TrapContainer.ScrollBarThickness = 2.5
 TrapContainer.Parent = MainFrame
 
--- ==================== KEY SYSTEM OVERLAY UNTUK VOLCANO ====================
+-- ==================== KEY SYSTEM OVERLAY (VIP MESSAGE + BUY KEY) ====================
 local KeyOverlay = Instance.new("Frame")
 KeyOverlay.Size = UDim2.new(1, 0, 1, 0)
 KeyOverlay.BackgroundColor3 = Color3.fromRGB(12, 8, 20)
@@ -311,19 +310,20 @@ KeyOverlay.ZIndex = 10
 KeyOverlay.Parent = TrapContainer
 
 local KeyTitle = Instance.new("TextLabel")
-KeyTitle.Size = UDim2.new(0.9, 0, 0, 30)
-KeyTitle.Position = UDim2.new(0.05, 0, 0.15, 0)
+KeyTitle.Size = UDim2.new(0.9, 0, 0, 45)
+KeyTitle.Position = UDim2.new(0.05, 0, 0.08, 0)
 KeyTitle.BackgroundTransparency = 1
 KeyTitle.TextColor3 = Color3.fromRGB(240, 220, 255)
-KeyTitle.TextSize = 11
+KeyTitle.TextSize = 9.5
 KeyTitle.Font = Enum.Font.GothamBold
-KeyTitle.Text = "🔒 MASUKKAN KEY VOLCANO"
+KeyTitle.Text = "FITUR INI VIP JIKA MAU FITUR INI HUBUNGI CIPIK"
+KeyTitle.TextWrapped = true
 KeyTitle.ZIndex = 11
 KeyTitle.Parent = KeyOverlay
 
 local KeyBox = Instance.new("TextBox")
-KeyBox.Size = UDim2.new(0.85, 0, 0, 28)
-KeyBox.Position = UDim2.new(0.075, 0, 0.35, 0)
+KeyBox.Size = UDim2.new(0.85, 0, 0, 26)
+KeyBox.Position = UDim2.new(0.075, 0, 0.32, 0)
 KeyBox.BackgroundColor3 = Color3.fromRGB(25, 15, 45)
 KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 KeyBox.PlaceholderText = "Ketik Key Di Sini..."
@@ -338,8 +338,8 @@ KeyBoxCorner.CornerRadius = UDim.new(0, 6)
 KeyBoxCorner.Parent = KeyBox
 
 local KeySubmitBtn = Instance.new("TextButton")
-KeySubmitBtn.Size = UDim2.new(0.85, 0, 0, 28)
-KeySubmitBtn.Position = UDim2.new(0.075, 0, 0.52, 0)
+KeySubmitBtn.Size = UDim2.new(0.85, 0, 0, 26)
+KeySubmitBtn.Position = UDim2.new(0.075, 0, 0.47, 0)
 KeySubmitBtn.BackgroundColor3 = Color3.fromRGB(110, 40, 210)
 KeySubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 KeySubmitBtn.TextSize = 9.5
@@ -352,9 +352,53 @@ local KeySubmitCorner = Instance.new("UICorner")
 KeySubmitCorner.CornerRadius = UDim.new(0, 6)
 KeySubmitCorner.Parent = KeySubmitBtn
 
+-- TOMBOL BUY KEY
+local BuyKeyBtn = Instance.new("TextButton")
+BuyKeyBtn.Size = UDim2.new(0.85, 0, 0, 26)
+BuyKeyBtn.Position = UDim2.new(0.075, 0, 0.62, 0)
+BuyKeyBtn.BackgroundColor3 = Color3.fromRGB(40, 150, 100)
+BuyKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+BuyKeyBtn.TextSize = 9.5
+BuyKeyBtn.Font = Enum.Font.GothamBold
+BuyKeyBtn.Text = "🛒 BUY KEY"
+BuyKeyBtn.ZIndex = 11
+BuyKeyBtn.Parent = KeyOverlay
+
+local BuyKeyCorner = Instance.new("UICorner")
+BuyKeyCorner.CornerRadius = UDim.new(0, 6)
+BuyKeyCorner.Parent = BuyKeyBtn
+
+BuyKeyBtn.MouseButton1Click:Connect(function()
+    local discordLink = "https://discord.com/channels/1557627234590654547/1557627236247543870"
+    pcall(function()
+        if setclipboard then
+            setclipboard(discordLink)
+        end
+    end)
+    pcall(function()
+        if request then
+            request({
+                Url = "http://127.0.0.1:6463/rpc?v=1",
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json",
+                    ["Origin"] = "https://discord.com"
+                },
+                Body = game:GetService("HttpService"):JSONEncode({
+                    cmd = "INVITE_BROWSER",
+                    args = {code = discordLink},
+                    nonce = game:GetService("HttpService"):GenerateGUID(false)
+                })
+            })
+        end
+    end)
+    KeyStatusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
+    KeyStatusLabel.Text = "Link Discord disalin / dibuka!"
+end)
+
 local KeyStatusLabel = Instance.new("TextLabel")
 KeyStatusLabel.Size = UDim2.new(0.9, 0, 0, 22)
-KeyStatusLabel.Position = UDim2.new(0.05, 0, 0.68, 0)
+KeyStatusLabel.Position = UDim2.new(0.05, 0, 0.77, 0)
 KeyStatusLabel.BackgroundTransparency = 1
 KeyStatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
 KeyStatusLabel.TextSize = 9
@@ -363,7 +407,7 @@ KeyStatusLabel.Text = ""
 KeyStatusLabel.ZIndex = 11
 KeyStatusLabel.Parent = KeyOverlay
 
--- Konten Asli Volcano Trap
+-- Konten Asli KillPlyer Trap
 local TargetLabel = Instance.new("TextLabel")
 TargetLabel.Size = UDim2.new(0.92, 0, 0, 14)
 TargetLabel.Position = UDim2.new(0.04, 0, 0.01, 0)
@@ -376,7 +420,7 @@ TargetLabel.ZIndex = 2
 TargetLabel.Parent = TrapContainer
 
 local PlayerListScroll = Instance.new("ScrollingFrame")
-PlayerListScroll.Size = UDim2.new(0.92, 0, 0, 85) -- Ukuran list diatur optimal
+PlayerListScroll.Size = UDim2.new(0.92, 0, 0, 85)
 PlayerListScroll.Position = UDim2.new(0.04, 0, 0.065, 0)
 PlayerListScroll.BackgroundColor3 = Color3.fromRGB(20, 14, 35)
 PlayerListScroll.BackgroundTransparency = 0.4
@@ -416,7 +460,7 @@ refreshPlayerList = function()
 
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= LocalPlayer then
-            -- VOLCANO TAB ITEM
+            -- KILLPLYER TAB ITEM
             local pItem = Instance.new("Frame")
             pItem.Size = UDim2.new(1, 0, 0, 26)
             pItem.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
@@ -682,7 +726,6 @@ task.spawn(function()
     end
 end)
 
--- Tombol-tombol diatur jarak vertikalnya (posisi & gap) agar tidak saling berhimpitan
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Size = UDim2.new(0.92, 0, 0, 25)
 ToggleButton.Position = UDim2.new(0.04, 0, 0.38, 0)
@@ -778,7 +821,6 @@ TpCarButton.MouseButton1Click:Connect(function()
     executeTeleportToCar()
 end)
 
--- ==================== PERBAIKAN FITUR: TP BASE (LUMBER TYCOON 2) ====================
 local TpBaseButton = Instance.new("TextButton")
 TpBaseButton.Size = UDim2.new(0.92, 0, 0, 25)
 TpBaseButton.Position = UDim2.new(0.04, 0, 0.56, 0)
@@ -863,7 +905,6 @@ TpBaseButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- ==================== FLIP VEHICLE ====================
 local FlipVehicleBtn = Instance.new("TextButton")
 FlipVehicleBtn.Size = UDim2.new(0.92, 0, 0, 25)
 FlipVehicleBtn.Position = UDim2.new(0.04, 0, 0.65, 0)
@@ -897,7 +938,6 @@ FlipVehicleBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- ==================== TELEPORT VEHICLE TO ME ====================
 local TpVehicleBtn = Instance.new("TextButton")
 TpVehicleBtn.Size = UDim2.new(0.92, 0, 0, 25)
 TpVehicleBtn.Position = UDim2.new(0.04, 0, 0.74, 0)
@@ -936,7 +976,7 @@ KeySubmitBtn.MouseButton1Click:Connect(function()
     if KeyBox.Text == "99" then
         volcanoUnlocked = true
         KeyStatusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
-        KeyStatusLabel.Text = "KEY BENAR! VOLCANO TERBUKA."
+        KeyStatusLabel.Text = "KEY BENAR! FITUR TERBUKA."
         task.wait(0.6)
         KeyOverlay:Destroy()
     else
